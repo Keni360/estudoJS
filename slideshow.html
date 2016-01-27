@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <style>
+            li{color: green; transition:all 1s; width:20px;}
+            .ativo {color:orangered; transition: 2s all; transform:translateX(400px);}
+        </style>
+        <script>
+            
+            var i = 1;
+            
+            
+            window.onload = function(){
+                var qnt = document.getElementById("menu").childElementCount;
+                var ativo = document.querySelector("li:nth-child("+i+")");
+                var hasElement = ativo.nextElementSibling;
+                var tempo = 5000;
+                var timeloop ;
+                ativo.classList.add("ativo");
+                
+                
+                
+                function eachElement(posit){
+                    
+                    if(i <= qnt){
+                        //alert(ativo.nextElementSibling);
+                        ativo.classList.remove("ativo"); //Remove a classe ativo do elemento atual
+                        ativo = document.querySelector("li:nth-child("+i+")"); //Selecionando proximo elemento a ser percorrido
+                        ativo.classList.add("ativo"); //Adcionando classe ativo ao elemento atual
+                        i++; 
+                        timeloop = setTimeout(eachElement,tempo); //seTimeout para a função ocorrer novamente
+                        
+                        
+                    }else{
+                        i = 1; //Reiniciando o loop
+                        eachElement(); //Re-execultando a função 
+                    }
+                    
+                                    
+                
+                }
+                
+                function prev(){
+                    clearTimeout(timeloop);
+                    i -= 2;
+                    if(i > 0){
+                        ativo.classList.remove("ativo");
+                        ativo = document.querySelector("li:nth-child("+i+")");
+                        ativo.classList.add("ativo");
+                        timeloop = setTimeout(eachElement,0);
+                    }else{
+                        i = qnt;
+                        eachElement();
+                    }
+                }
+                
+                document.getElementById("prev").onclick = function(){
+                    prev();
+                }
+                
+                
+                document.getElementById("next").onclick = function(){
+                    clearTimeout(timeloop);
+                    eachElement();
+                }
+                
+                eachElement();
+                
+            }
+            
+        </script>
+    </head>
+    <body>
+        <ul id='menu'>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>1</li>
+            <li>2</li>
+            <li >3</li>
+        </ul>
+        <button id='prev'>anterior</button><button id='next'>proximo</button>
+    </body>
+</html>
