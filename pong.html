@@ -1,0 +1,319 @@
+<html>
+    <head>
+        <title>My pong</title>
+        <style>
+            *{margin: 0px; padding: 0px;}
+            #player{
+                
+            }
+            body{
+                background-color:#313131;
+                width:100%;
+                }
+                canvas{
+                    border:solid #fff 2px;
+                    background-color:#313131;
+                    display:block;
+                    margin:1.5% auto;
+                }
+        </style>
+    </head>
+    <body>
+        <canvas height='600' width='600' id='mycanvas'>
+            Infelizmente seu navegador não suporta canvas... :/
+        </canvas>
+        <audio id="colisionWall">
+            <source src="audio/bate.mp3" type="audio/ogg">
+            <source src="audio/bate.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="colisionPlayer">
+            <source src="audio/player_bate.mp3" type="audio/ogg">
+            <source src="audio/player_bate.mp3" type="audio/mpeg">
+        </audio>
+        <script>
+            var canvas = document.getElementById("mycanvas");
+            var ctx = canvas.getContext("2d");
+            
+            
+            /*
+            ============================================================================
+            # Classe Player                                                            #
+            ============================================================================
+            */
+            function Player(canvas){
+                this.x = 10;
+                this.y = canvas.height / 2 - 60; 
+                this.height = 120;
+                this.width = 30;
+                this.score = 0;
+                this.speed = 6;
+                this.keyUp = false;
+                this.keyDown = false;
+                
+                this.resetPos = function (){
+                    this.x = 10;
+                    this.y = canvas.height / 2 - 60;
+                    this.speed = 5;
+                }
+            }
+            
+            /*
+            ============================================================================
+            # Classe Bolinha                                                           #
+            ============================================================================
+            */
+            function Bola(canvas){
+                this.height = 30;
+                this.width = 30;
+                this.x = canvas.height / 2 - (this.height / 2);
+                this.y = canvas.width / 2 - (this.width / 2);
+                this.dirX = -1;
+                this.dirY = 1;
+                this.mod = 0; // usada para aumentar a velicidade da bola a cada colisão
+                this.speed = 3;
+                
+            }
+            
+            //=========================================
+            
+            
+            /*
+            ============================================================================
+            # Instanciando objetos                                                        #
+            ============================================================================
+            */
+            var player1 = new Player(canvas); 
+            var player2 = new Player(canvas);
+                player2.x = 560;
+            var bola = new Bola(canvas);
+            
+            var audio = {
+                colisionWall: document.getElementById("colisionWall"),
+                colisionPlayer: document.getElementById("colisionPlayer")
+            };
+            
+            
+            
+            
+            /*
+            ============================================================================
+            # Metodo para desenhar os objetos instanciados na tela                     #
+            ============================================================================
+            */
+            function draw(){
+                ctx.clearRect(0,0, canvas.width, canvas.height);
+                ctx.fillStyle = "white";
+                ctx.fillRect(player1.x, player1.y,player1.width, player1.height);
+                ctx.fillRect(player2.x, player2.y,player2.width, player2.height);
+                ctx.fillRect(bola.x, bola.y, bola.width, bola.height);
+                ctx.fillStyle = "red";
+                ctx.fillRect(bola.x+bola.width  , bola.y, 2, -2)
+                ctx.font = "1.3em Arial";
+                ctx.fillText("Player 1: "+player1.score, 50, 20);
+                ctx.fillText("Player 2: "+player2.score, 460, 20);
+                
+                
+            }
+            
+            
+                var tecla = {w: 87,
+                              s: 83,
+                              up:38,
+                              down: 40        
+                             };
+                             
+                             
+                //testando respostas de codigo e rederização com click
+                window.addEventListener("keydown",function(e){
+                    
+                    //bola.x = bola.x + 5;
+                    //alert(e.keyCode);
+                    switch(e.keyCode)
+                    {
+                        case tecla.w:
+                             player1.keyUp = true;
+                             break;
+                             
+                        case tecla.s:
+                             player1.keyDown = true;
+                             break;
+                             
+                        case tecla.up:
+                             player2.keyUp = true;
+                             break;
+                             
+                        case tecla.down:
+                             player2.keyDown = true;
+                             break;  
+                           
+                             
+                    }
+                    
+                },false);    
+                
+                window.addEventListener("keyup",function(e){
+                    
+                    
+                    //alert(e.keyCode);
+                    switch(e.keyCode)
+                    {
+                        case tecla.w:
+                             player1.keyUp = false;
+                             break;
+                             
+                        case tecla.s:
+                             player1.keyDown = false;
+                             break;
+                             
+                             case tecla.up:
+                             player2.keyUp = false;
+                             break;
+                             
+                        case tecla.down:
+                             player2.keyDown = false;
+                             break;
+                    }
+                    
+                },false);    
+                
+                    //alert(player1.x++);
+                        
+                        
+                    
+                
+                
+                function move(){
+                    
+                    
+                    
+                    if(player1.keyUp && player1.y > 15)
+                        {
+                            player1.y-= player1.speed;
+                        }
+                        else if(player1.keyDown && player1.y + player1.height < canvas.height - 15)
+                        {
+                            player1.y+= player1.speed;
+                        }
+                        if(player2.keyUp && player2.y > 15)
+                        {
+                            player2.y-= player2.speed;
+                        }
+                        else if(player2.keyDown && player2.y + player2.height < canvas.height - 15)
+                        {
+                            player2.y+= player2.speed;
+                        }
+                        
+                        // Colisor da bola com player 1
+                        //canto superior esquerdo da bola
+                        if(bola.x <= player1.x + player1.width  &&
+                           bola.y >= player1.y && bola.y <=  player1.y+player1.height ||
+                           //canto inferior esquerdo da bola
+                           bola.x <= player1.x + player1.width && 
+                           bola.y+bola.height >= player1.y && bola.y+bola.height <= player1.y+player1.height
+                           //canto superior direito
+                           )
+                        {
+                            
+                            if(bola.dirY == -1)
+                            {
+                                bola.dirX = 1;
+                                bola.dirY = -1;
+                            }else{
+                                bola.dirX = 1;
+                                bola.dirY = 1;
+                            }
+                           audio.colisionPlayer.play();
+                        }
+                        
+                        // Colisor player 2
+                        //canto superior direito
+                        if(bola.x + bola.width >= player2.x &&
+                           bola.y >= player2.y && bola.y <=  player2.y+player2.height ||
+                           //canto inferior esquerdo da bola
+                           bola.x  + bola.width >= player2.x  && 
+                           bola.y+bola.height >= player2.y && bola.y+bola.height <= player2.y+player2.height 
+                           )
+                        {
+                            
+                            if(bola.dirY == -1)
+                            {
+                                bola.dirX = -1;
+                                bola.dirY = -1;
+                            }else{
+                                bola.dirX = -1;
+                                bola.dirY = 1;
+                            }
+                            audio.colisionPlayer.play();
+                        }
+                        
+                        //colisor borda superior canvas
+                        if(bola.y <= 0)
+                        {
+                            bola.dirY = 1;
+                            audio.colisionWall.play();
+                        }
+                        //colisor borda inferior canvas
+                        if(bola.y + bola.height >= canvas.height)
+                        {
+                            bola.dirY = -1;
+                            audio.colisionWall.play();
+                        }
+                        
+                        //colisor borda esquerda canvas
+                        if(bola.x+bola.width < 0)
+                        {
+                           player2.score++;
+                           resetPos();
+                        }
+                        
+                        //colisor borda direito canvas
+                        if(bola.x >= canvas.width)
+                        {
+                           player1.score++;
+                           resetPos();
+                        }
+                        bola.x+= bola.speed * bola.dirX;
+                        bola.y+= bola.speed * bola.dirY;
+                        
+                }
+                
+                
+                
+            
+                function resetPos(){
+                    bola.x = canvas.height / 2 - (bola.height / 2);
+                    bola.y = canvas.width / 2 - (bola.width / 2);
+                    player1.resetPos();
+                    player2.resetPos();
+                    player2.x = 560;
+                    bola.speed = 3;
+                }
+             
+             
+            /* 
+            ============================================================================
+            # Função que atualiza os elementos na minha tela                           #
+            ============================================================================
+            */
+            function update(){
+                
+                draw(); 
+                move();
+                
+                
+            }
+            function SceneGame(){
+                draw(); 
+                move();
+            }
+            
+           document.onload = setInterval(update,1);
+            
+        </script>
+        <span id='player'></span>
+        <span id='oponente'></span>
+        <span id='ball'></span>
+        
+        <!--<script src='js/pong.js'></script> -->
+    </body>
+</html>

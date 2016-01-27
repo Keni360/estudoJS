@@ -1,0 +1,209 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        
+        <style>
+            *{margin:0px; height:0px;}
+            body{
+                width: 100%;
+                height: 100vh;
+            }
+            .bloco{
+                left:0;
+                top:0;
+                position:absolute;
+                display: block;
+                height:30px;
+                width:30px;
+                background-color: aqua;
+                transition: .8s all linear;
+                
+            }
+            #hero,#player {
+                display:block;
+                height:30px;
+                width:30px;
+                background-color: black;
+                position:absolute;
+            }
+            
+            #player{
+                background-color:blue;
+                left: 0px;
+                top:0px;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <span class='bloco'>
+        </span>
+        <span id='hero'></span>
+        <span id='player'></span>
+        
+        
+        <script type='text/javascript'>
+            
+            
+            
+            
+                var bloco = document.querySelector(".bloco");
+                var hero = document.querySelector("#hero");
+                var on = true;
+                var posX = 0;
+                var posY = 0;
+                var veloY = 5;
+                var veloX = 5;
+                var gravidade  = 0.5;        
+            
+                //window.alert('hey');
+            
+            /*
+            ============================================================================
+            # Classe Personagem                                                        #
+            ============================================================================
+            */
+            function Personagem (){
+                //this.person = document.querySelector(seletor);
+                this.layer;
+                this.name;
+                this.width = 30;
+                this.height = 30;
+                this.posX = 10;
+                this.posY = 0;
+                this.speedY = 2;
+                this.speedX = 0.2;
+                this.color = "blue";
+                this.lookRight = true;
+                //this.person.style.backgroundColor = this.color;
+                
+                
+                
+                this.sayHi = function(){
+                    alert("Hi! I'm "+this.name);
+                };
+                
+                this.person.addEventListener('click',function(){
+                        this.sayHi();
+                });
+            }
+            
+            //Classe do jogador
+            function Player(seletor){
+                this.person = document.querySelector(seletor);
+                this.person.style.backgroundColor = "blue";
+                this.person.style.height = this.height+"px";
+                this.person.style.width = this.width+"px";
+                this.person.style.display = "block";
+            }
+            
+            Player.prototype = new Personagem();
+            Player.prototype.constructor = Player;
+            Player.prototype.move = function(){
+                
+                alert("se movendo");
+            }
+            
+            var mauro = new Player("#player");
+            
+            function Enemy(seletor){
+                this.person = document.querySelector(seletor);
+                this.person.style.backgroundColor = "green";
+            }
+            
+            //Classe para andar automaticamente e retornar ao encontrar um colisor, 
+
+            
+            Enemy.prototype = new Personagem();
+            Enemy.prototype.constructor = Enemy;
+            Enemy.prototype.walk = function(){
+                    
+                    
+                    if(this.posX + this.width > document.body.clientWidth)
+                    {
+      //                  alert("bateu");
+                        this.lookRight = false;
+    //                    alert("retornando");
+                    }
+                    
+                     if(this.posX <= 0)
+                    {
+  //                      alert("bateu");
+                        this.lookRight = true;
+//                        alert("retornando");
+                    }
+                    
+                    
+                    if(this.lookRight)
+                    {
+                        this.posX = this.posX + this.speedX;
+                        this.person.style.left = this.posX+"px";
+                    }
+                    
+                    if(this.lookRight === false)
+                    {
+                        
+                        this.posX = this.posX - this.speedX;
+                        this.person.style.left = this.posX+"px";
+                    }
+                    
+                    
+                };
+
+            
+            
+            var cloud = new Personagem("#hero");
+            cloud.nome = "Cloud Strife";
+            alert(cloud.nome);
+            //cloud.name = "Cloud Strife";
+            //cloud.sayHi();
+            
+            
+            
+            window.onload = function(){
+                function update(){
+                
+                    cloud.walk();
+                    setTimeout(update,0);
+                }
+            
+                update();
+                
+            };
+            
+            
+            
+            
+            
+            function move(){
+                posX += (2);
+                bloco.style.left = posX+"px";
+                
+                if(posX+33 > document.body.clientWidth)
+                {
+                    posX = posX * (-1);
+                    
+                }
+                if(posX < 0 )
+                {
+                    posX = 0;
+                }
+                
+            
+            }    
+            move();
+
+            
+            
+            
+                bloco.addEventListener("click",function()
+                {
+                   posX = cloud.posX + cloud.width;
+                   bloco.style.left = posX;
+                   //window.alert(document.body.clientWidth)
+                });
+                
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>img{float:left;}</style>
+        <script type='text/javascript'>
+            window.onload = function(){
+                                window.alert("hey");
+                                carregarCadeiras();
+            }
+            
+                var cadeira = [false,true,true,false,true];
+                var img = document.getElementsByTagName("img");
+                var i = 0;
+                
+                //window.alert(cadeira[3]);
+                
+                function carregarCadeiras(){
+                    for(var j = 0; j < img.length; j++){
+
+                        if(cadeira[j] === true){
+                            img[j].src = "https://www.google.com.br/logos/doodles/2015/hedy-lamarrs-101st-birthday-5679746450980864.5-res.png";
+                        }else{
+                            img[j].src = "http://cdn-radiotime-logos.tunein.com/s145254q.png";
+                        }
+                        }
+                    }
+                
+
+                
+                while(i < 10){
+                    i++;
+                  document.getElementById("texto").textContent = "Rodando "+i+" vezes";
+                }
+
+        </script>
+    </head>
+    
+        <div id='texto'>TODO write content</div>
+        <img src="https://www.google.com.br/logos/doodles/2015/hedy-lamarrs-101st-birthday-5679746450980864.5-res.png"/>
+        <img />
+        <img/>
+        <img/>
+        <img/>
+    </body>
+</html>
+a

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            *{margin:0px; padding:0px;}
+            body{
+                width:100%;
+                height:100vh;
+            }
+            canvas{
+                display:block;
+                margin:auto;
+                margin-top:1.5%;
+                background-color: #313131;
+            }
+        </style>
+        
+    </head>
+    <body>
+        <span id='time'></span>
+        <canvas width='600' height='600'>ERRO</canvas>
+        <script type='text/javascript'>
+            
+            var canvas = document.querySelector("canvas");
+            var ctx = canvas.getContext("2d");
+            var time = 0;
+            var timePanel = document.getElementById("time");
+            
+            
+            
+            function Player(){
+                this.name;
+                this.width = 50;
+                this.height = 50;
+                this.posX = 20;
+                this.posY = 20;
+                this.speed;
+                this.keyUp;
+                this.keyDown;
+                this.jump = false;
+                this.slide = false;
+                this.time = 0;
+                
+                //Keys - controles
+                this.key = {jump:32, slide:40};
+                this.jumper = function(time){
+                    
+                }
+
+                
+            }
+            
+            var jogador = new Player();
+            
+            window.addEventListener('keydown',function(e){
+                
+                switch(e.keyCode)
+                {
+                    case jogador.key.jump:
+                        jogador.jump = true;
+                        
+                    break;
+                    
+                    case jogador.key.slide:
+                        jogador.slide = true;
+                    break;
+                }
+
+                
+                
+            },false);
+            
+            window.addEventListener('keyup',function(e){
+                
+                switch(e.keyCode)
+                {
+                    case jogador.key.jump:
+                        jogador.jump = false;
+                        
+                    break;
+                    
+                    case jogador.key.slide:
+                        jogador.slide = false;
+                    break;
+                }
+                
+                
+                
+            },false);
+            
+            
+            function draw (){
+                ctx.clearRect(0,0, canvas.width, canvas.height); //Apaga os vetores do quadro anterior
+                ctx.fillStyle = "#fff";
+                ctx.fillRect(jogador.posX,jogador.posY,jogador.width,jogador.height);
+                
+            }
+            
+            function update(){
+                
+                time+= 0.005;
+                timePanel.innerHTML = ""+time;
+                
+                if(jogador.jump == true){
+                    var pulo = 50 + jogador.posY;
+                        while(jogador.posY < pulo){
+                            jogador.posY += .1;
+                        }
+                }
+                
+                draw();
+            }
+            
+            setInterval(update,1);
+            
+        </script>
+    </body>
+</html>

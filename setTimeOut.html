@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            window.onload = function(){
+                var txt = document.getElementById("texto");
+                var i = 0;
+                var on = true;
+                var btn = document.getElementById("btn");
+                
+                
+                function count(){
+                    if(on == true){
+                    tokeTimeout = setTimeout(count, 1);
+                    txt.innerHTML = ""+i;
+                    i++;
+                 }
+                }
+                
+                 btn.onclick = function(){
+                     on = false;
+                     btn.innerHTML = "iniciar";
+                 }
+                 
+                 btn.ondblclick = function(){
+                     on = true;
+                     count();
+                     btn.innerHTML = "parar";
+                 }
+                count();
+                
+            }
+        </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <button onclick='stop()' id='btn'>parar</button>
+        <span id='texto'>Hey</span>
+    </body>
+</html>
